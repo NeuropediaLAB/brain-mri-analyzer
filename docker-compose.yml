@@ -1,0 +1,17 @@
+services:
+  brain-mri-analyzer:
+    image: nginx:alpine
+    container_name: brain-mri-analyzer
+    ports:
+      - "8095:80"
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+      - ./app.js:/usr/share/nginx/html/app.js:ro
+      - ./tutorial.html:/usr/share/nginx/html/tutorial.html:ro
+    restart: unless-stopped
+    networks:
+      - brain-analyzer-network
+
+networks:
+  brain-analyzer-network:
+    driver: bridge

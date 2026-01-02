@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial - Brain MRI Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .nav-buttons a {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .nav-buttons a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .section h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .section p, .section li {
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .code-block {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .highlight-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .methodology-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .methodology-card h4 {
+            color: white;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .methodology-card p {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .workflow-step {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .workflow-step h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .reference-list {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .reference-list li {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .toc h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 10px;
+        }
+
+        .toc a {
+            color: #764ba2;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc a:hover {
+            color: #667eea;
+            text-decoration: underline;
+        }
+
+        .icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Tutorial Técnico</h1>
+            <p>Brain MRI Analyzer - Metodología y Documentación de Implementación</p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="index.html">🏠 Volver a la Aplicación</a>
+            <a href="#metodologia">📖 Metodología</a>
+            <a href="#implementacion">💻 Implementación</a>
+            <a href="#uso">🎯 Guía de Uso</a>
+            <a href="#referencias">📚 Referencias</a>
+        </div>
+
+        <div class="content">
+            <!-- Tabla de contenidos -->
+            <div class="toc">
+                <h3>📋 Tabla de Contenidos</h3>
+                <ul>
+                    <li><a href="#introduccion">1. Introducción</a></li>
+                    <li><a href="#metodologia">2. Metodología Científica</a></li>
+                    <li><a href="#arquitectura">3. Arquitectura del Sistema</a></li>
+                    <li><a href="#implementacion">4. Análisis de Implementación</a></li>
+                    <li><a href="#algoritmos">5. Algoritmos Detallados</a></li>
+                    <li><a href="#uso">6. Guía de Uso Clínico</a></li>
+                    <li><a href="#validacion">7. Validación y Control de Calidad</a></li>
+                    <li><a href="#referencias">8. Referencias Bibliográficas</a></li>
+                </ul>
+            </div>
+
+            <!-- 1. Introducción -->
+            <div class="section" id="introduccion">
+                <h2>1. Introducción</h2>
+                
+                <p>
+                    <strong>Brain MRI Analyzer</strong> es una herramienta web para la medición semi-automatizada 
+                    del perímetro cefálico y área cerebral en imágenes de resonancia magnética (MRI). 
+                    El sistema implementa metodología clínica validada basada en los estándares OFC-MRI 
+                    (Occipital-Frontal Circumference from MRI).
+                </p>
+
+                <div class="highlight-box">
+                    <h4>🎯 Objetivos del Sistema</h4>
+                    <ul>
+                        <li>Proporcionar mediciones precisas y reproducibles del perímetro cefálico</li>
+                        <li>Calcular área y volumen cerebral en cortes axiales</li>
+                        <li>Generar Z-scores ajustados por edad y sexo</li>
+                        <li>Facilitar el diagnóstico diferencial de alteraciones craneales</li>
+                        <li>Exportar resultados en formato estructurado (JSON)</li>
+                    </ul>
+                </div>
+
+                <h3>Características Principales</h3>
+                <div class="methodology-grid">
+                    <div class="methodology-card">
+                        <h4>🤖 Semi-Automatización</h4>
+                        <p>Generación automática de contornos de referencia con ajuste manual preciso por el usuario.</p>
+                    </div>
+                    <div class="methodology-card">
+                        <h4>📊 Métricas Clínicas</h4>
+                        <p>Perímetro cefálico, área cerebral, volumen estimado, Z-scores, percentiles y ratios diagnósticos.</p>
+                    </div>
+                    <div class="methodology-card">
+                        <h4>✅ Control de Calidad</h4>
+                        <p>Índices de circularidad, confianza de medición y validaciones automáticas integradas.</p>
+                    </div>
+                    <div class="methodology-card">
+                        <h4>💾 Exportación</h4>
+                        <p>Resultados estructurados en JSON con metadata completa y trazabilidad.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Metodología Científica -->
+            <div class="section" id="metodologia">
+                <h2>2. Metodología Científica</h2>
+
+                <h3>2.1 Fundamentos Teóricos</h3>
+                <p>
+                    La medición del perímetro cefálico mediante MRI (OFC-MRI) es una técnica estandarizada 
+                    para evaluar el crecimiento craneal y cerebral. A diferencia de la medición antropométrica 
+                    tradicional con cinta métrica, la OFC-MRI permite:
+                </p>
+                <ul>
+                    <li>Mediciones en cortes específicos (nivel de glándula pineal)</li>
+                    <li>Reproducibilidad entre diferentes operadores</li>
+                    <li>Evaluación simultánea de estructuras intracraneales</li>
+                    <li>Detección de asimetrías y malformaciones</li>
+                </ul>
+
+                <div class="code-block">
+                    <strong>Nivel Anatómico de Medición:</strong><br>
+                    Corte axial a nivel de la glándula pineal, que corresponde aproximadamente a:<br>
+                    • Plano de máxima circunferencia craneal<br>
+                    • Paso de cuerpo calloso y tercer ventrículo<br>
+                    • Simetría de hemisferios cerebrales
+                </div>
+
+                <h3>2.2 Metodología OFC-MRI Implementada</h3>
+                
+                <h4>Enfoque Semi-Automático</h4>
+                <p>
+                    Siguiendo las recomendaciones de Li et al. (2021, PMC8326831), el sistema implementa 
+                    un enfoque <strong>semi-automático</strong> que combina:
+                </p>
+
+                <div class="workflow-step">
+                    <h4>Paso 1: Generación Automática</h4>
+                    <p>
+                        El sistema analiza la imagen y genera una <strong>circunferencia de referencia</strong> 
+                        basada en el análisis del contenido de la imagen (detección de píxeles brillantes, 
+                        cálculo de centro anatómico, estimación de dimensiones).
+                    </p>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Paso 2: Ajuste Manual</h4>
+                    <p>
+                        El radiólogo o técnico ajusta manualmente el contorno mediante:
+                        <ul>
+                            <li><strong>Controles globales</strong>: Desplazamiento (↑↓←→) y escala (⊕⊖)</li>
+                            <li><strong>Ajuste individual</strong>: Arrastre de puntos específicos</li>
+                            <li><strong>Añadir puntos</strong>: Doble click en áreas que requieren más detalle</li>
+                        </ul>
+                    </p>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Paso 3: Validación</h4>
+                    <p>
+                        El sistema calcula automáticamente índices de calidad:
+                        <ul>
+                            <li>Índice de circularidad (C = 4π × Área / Perímetro²)</li>
+                            <li>Confianza de medición (basado en distribución de puntos)</li>
+                            <li>Alertas de formas irregulares</li>
+                        </ul>
+                    </p>
+                </div>
+
+                <h3>2.3 Justificación del Enfoque</h3>
+                <div class="warning-box">
+                    <h4>⚠️ ¿Por qué NO detección completamente automática?</h4>
+                    <p>
+                        La literatura científica muestra que:
+                    </p>
+                    <ul>
+                        <li>La <strong>medición manual por expertos</strong> sigue siendo el gold standard</li>
+                        <li>Algoritmos automáticos tienen tasa de error 10-15% en casos complejos</li>
+                        <li>Variabilidad inter-imagen (contraste, artefactos, anatomía) requiere supervisión</li>
+                        <li>Casos patológicos necesitan criterio clínico humano</li>
+                    </ul>
+                    <p>
+                        <strong>Solución:</strong> Sistema semi-automático que proporciona punto de partida 
+                        óptimo y control total al usuario.
+                    </p>
+                </div>
+
+                <h3>2.4 Datos Normativos</h3>
+                <p>
+                    El sistema utiliza datos normativos de múltiples fuentes validadas:
+                </p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fuente</th>
+                            <th>Población</th>
+                            <th>Rango de Edad</th>
+                            <th>Uso en Sistema</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>WHO (2006)</td>
+                            <td>Internacional</td>
+                            <td>0-5 años</td>
+                            <td>Z-scores pediátricos</td>
+                        </tr>
+                        <tr>
+                            <td>Rollins et al. (2010)</td>
+                            <td>Estados Unidos</td>
+                            <td>0-21 años</td>
+                            <td>Percentiles extendidos</td>
+                        </tr>
+                        <tr>
+                            <td>UNC NIRAL</td>
+                            <td>Bases de datos MRI</td>
+                            <td>Todas las edades</td>
+                            <td>Volúmenes intracraneales</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 3. Arquitectura del Sistema -->
+            <div class="section" id="arquitectura">
+                <h2>3. Arquitectura del Sistema</h2>
+
+                <h3>3.1 Estructura General</h3>
+                <div class="code-block">
+                    <code>
+brain-mri-analyzer/<br>
+├── index.html          # Interfaz principal<br>
+├── tutorial.html       # Este tutorial<br>
+├── app.js             # Lógica de la aplicación<br>
+├── docker-compose.yml # Despliegue<br>
+└── README.md          # Documentación
+                    </code>
+                </div>
+
+                <h3>3.2 Componentes Principales</h3>
+
+                <h4>Clase BrainMRIAnalyzer</h4>
+                <p>Clase principal que encapsula toda la lógica de la aplicación:</p>
+                
+                <div class="code-block">
+                    <code>
+class BrainMRIAnalyzer {<br>
+&nbsp;&nbsp;constructor() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// Estado de la aplicación<br>
+&nbsp;&nbsp;&nbsp;&nbsp;this.canvas           // Canvas para renderizado<br>
+&nbsp;&nbsp;&nbsp;&nbsp;this.image            // Imagen MRI cargada<br>
+&nbsp;&nbsp;&nbsp;&nbsp;this.pcPoints = []    // Puntos perímetro cefálico<br>
+&nbsp;&nbsp;&nbsp;&nbsp;this.brainPoints = [] // Puntos área cerebral<br>
+&nbsp;&nbsp;&nbsp;&nbsp;this.measureMode      // 'pc' o 'brain'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;this.pixelScale       // Escala mm/pixel<br>
+&nbsp;&nbsp;}<br>
+}
+                    </code>
+                </div>
+
+                <h3>3.3 Módulos Funcionales</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Módulo</th>
+                            <th>Funciones Principales</th>
+                            <th>Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Carga de Imagen</strong></td>
+                            <td>loadImage(), setupCanvas()</td>
+                            <td>Manejo de archivos y configuración del canvas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Detección</strong></td>
+                            <td>autoDetectSkull(), autoDetectBrain()</td>
+                            <td>Generación de contornos de referencia</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interacción</strong></td>
+                            <td>addPoint(), startDrag(), doDrag()</td>
+                            <td>Manipulación manual de puntos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ajuste Global</strong></td>
+                            <td>adjustAllPointsX/Y/Radius()</td>
+                            <td>Controles de desplazamiento y escala</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cálculos</strong></td>
+                            <td>calculatePerimeter(), calculateArea()</td>
+                            <td>Mediciones geométricas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Estadística</strong></td>
+                            <td>calculateZScore(), getPercentile()</td>
+                            <td>Análisis estadístico</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Calidad</strong></td>
+                            <td>calculateCircularity(), calculateMeasurementConfidence()</td>
+                            <td>Validación de mediciones</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Exportación</strong></td>
+                            <td>exportResults()</td>
+                            <td>Generación de reportes JSON</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 4. Análisis de Implementación -->
+            <div class="section" id="implementacion">
+                <h2>4. Análisis de Implementación</h2>
+
+                <h3>4.1 Detección Automática del Cráneo</h3>
+                
+                <div class="code-block">
+                    <code>
+<strong>Algoritmo autoDetectSkull():</strong><br><br>
+
+1. Análisis de la imagen:<br>
+&nbsp;&nbsp;• Escaneo rápido (paso de 3 píxeles)<br>
+&nbsp;&nbsp;• Detección de píxeles brillantes (brightness > 30)<br>
+&nbsp;&nbsp;• Cálculo de bounding box (minX, maxX, minY, maxY)<br>
+&nbsp;&nbsp;• Determinación de centro anatómico<br><br>
+
+2. Cálculo de dimensiones:<br>
+&nbsp;&nbsp;centerX = sumX / count<br>
+&nbsp;&nbsp;centerY = sumY / count<br>
+&nbsp;&nbsp;radius = min(detectedWidth, detectedHeight) / 2.2<br><br>
+
+3. Generación de circunferencia:<br>
+&nbsp;&nbsp;Para i = 0 hasta 72:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;angle = (i / 72) × 2π<br>
+&nbsp;&nbsp;&nbsp;&nbsp;x = centerX + radius × cos(angle)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;y = centerY + radius × sin(angle)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;points.push({x, y})
+                    </code>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Ventajas del Algoritmo</h4>
+                    <ul>
+                        <li><strong>Adaptativo:</strong> Se ajusta al tamaño real del contenido de la imagen</li>
+                        <li><strong>Robusto:</strong> Funciona con diferentes contrastes y escalas</li>
+                        <li><strong>Rápido:</strong> Escaneo optimizado (paso de 3px)</li>
+                        <li><strong>Predictible:</strong> Siempre genera circunferencia, no formas erráticas</li>
+                    </ul>
+                </div>
+
+                <h3>4.2 Detección del Área Cerebral</h3>
+
+                <div class="code-block">
+                    <code>
+<strong>Algoritmo autoDetectBrain():</strong><br><br>
+
+1. Validación:<br>
+&nbsp;&nbsp;• Requiere perímetro cefálico marcado (pcPoints.length >= 10)<br>
+&nbsp;&nbsp;• Asegura contexto anatómico<br><br>
+
+2. Cálculo de centro y radio craneal:<br>
+&nbsp;&nbsp;centerX = Σ(pcPoints.x) / n<br>
+&nbsp;&nbsp;centerY = Σ(pcPoints.y) / n<br>
+&nbsp;&nbsp;avgRadius = Σ√((p.x - centerX)² + (p.y - centerY)²) / n<br><br>
+
+3. Generación de circunferencia interna:<br>
+&nbsp;&nbsp;brainRadius = avgRadius × 0.75  // 75% del radio craneal<br>
+&nbsp;&nbsp;Genera 72 puntos en círculo interno
+                    </code>
+                </div>
+
+                <p>
+                    El factor de <strong>0.75 (75%)</strong> se basa en proporciones anatómicas típicas 
+                    donde el parénquima cerebral ocupa aproximadamente 75-80% del diámetro craneal, 
+                    dejando espacio para LCR periférico, duramadre y tablas craneales.
+                </p>
+
+                <h3>4.3 Controles de Ajuste Global</h3>
+
+                <h4>adjustAllPointsX/Y(delta) - Desplazamiento</h4>
+                <div class="code-block">
+                    <code>
+// Mueve todos los puntos en un eje<br>
+adjustAllPointsX(delta) {<br>
+&nbsp;&nbsp;const points = this.measureMode === 'brain' ? <br>
+&nbsp;&nbsp;&nbsp;&nbsp;this.brainPoints : this.pcPoints;<br>
+&nbsp;&nbsp;points.forEach(p => p.x += delta);<br>
+&nbsp;&nbsp;this.drawImage();<br>
+}
+                    </code>
+                </div>
+
+                <h4>adjustAllPointsRadius(delta) - Escala Radial</h4>
+                <div class="code-block">
+                    <code>
+// Expande/contrae manteniendo proporciones<br>
+adjustAllPointsRadius(delta) {<br>
+&nbsp;&nbsp;// 1. Calcular centro<br>
+&nbsp;&nbsp;centerX = Σ(p.x) / n<br>
+&nbsp;&nbsp;centerY = Σ(p.y) / n<br><br>
+  
+&nbsp;&nbsp;// 2. Para cada punto:<br>
+&nbsp;&nbsp;points.forEach(p => {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;currentRadius = √((p.x - centerX)² + (p.y - centerY)²)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;newRadius = currentRadius + delta<br>
+&nbsp;&nbsp;&nbsp;&nbsp;factor = newRadius / currentRadius<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.x = centerX + (p.x - centerX) × factor<br>
+&nbsp;&nbsp;&nbsp;&nbsp;p.y = centerY + (p.y - centerY) × factor<br>
+&nbsp;&nbsp;})<br>
+}
+                    </code>
+                </div>
+
+                <h3>4.4 Cálculos Geométricos</h3>
+
+                <h4>Perímetro Cefálico</h4>
+                <div class="code-block">
+                    <code>
+<strong>Método del Polígono:</strong><br>
+P = Σ √((x[i+1] - x[i])² + (y[i+1] - y[i])²)<br><br>
+
+Conversión a cm:<br>
+P_cm = P_pixels × pixelScale / 10
+                    </code>
+                </div>
+
+                <h4>Área Cerebral</h4>
+                <div class="code-block">
+                    <code>
+<strong>Fórmula del Área de Polígono (Shoelace):</strong><br>
+A = ½ |Σ(x[i] × y[i+1] - x[i+1] × y[i])|<br><br>
+
+Conversión a cm²:<br>
+A_cm² = A_pixels × (pixelScale/10)²
+                    </code>
+                </div>
+
+                <h4>Volumen Estimado</h4>
+                <div class="code-block">
+                    <code>
+<strong>Estimación 3D:</strong><br>
+V = Área × grosor_corte × factor_forma<br><br>
+
+Donde:<br>
+• factor_forma ≈ 1.5 (aproximación elipsoide)<br>
+• grosor_corte en mm (típicamente 5mm)
+                    </code>
+                </div>
+
+                <h3>4.5 Z-Scores por Sexo y Edad</h3>
+
+                <div class="code-block">
+                    <code>
+<strong>Cálculo de Z-Score:</strong><br>
+Z = (medición - media_referencia) / SD_referencia<br><br>
+
+<strong>Datos normativos implementados:</strong><br>
+• 10 puntos de edad (0, 0.5, 1, 2, 3, 5, 7, 10, 15, 18 años)<br>
+• Diferenciado por sexo (masculino/femenino)<br>
+• Interpolación por edad más cercana<br><br>
+
+<strong>Categorías diagnósticas:</strong><br>
+• Z < -3: Microcefalia severa<br>
+• -3 ≤ Z < -2: Microcefalia moderada<br>
+• -2 ≤ Z < -1.5: Límite bajo<br>
+• -1.5 ≤ Z ≤ 1.5: Normal<br>
+• 1.5 < Z ≤ 2: Límite alto<br>
+• 2 < Z ≤ 3: Macrocefalia moderada<br>
+• Z > 3: Macrocefalia severa
+                    </code>
+                </div>
+
+                <h3>4.6 Índices de Calidad</h3>
+
+                <h4>Índice de Circularidad</h4>
+                <div class="code-block">
+                    <code>
+C = 4π × Área / Perímetro²<br><br>
+
+Interpretación:<br>
+• C = 1.0: Círculo perfecto<br>
+• C > 0.85: Forma aceptable ✓<br>
+• C < 0.85: Forma irregular ⚠ (revisar trazado)
+                    </code>
+                </div>
+
+                <h4>Confianza de Medición</h4>
+                <div class="code-block">
+                    <code>
+<strong>Índice compuesto:</strong><br>
+Confianza = 0.5 × circularidad + <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.2 × score_puntos + <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.3 × uniformidad_angular<br><br>
+
+Donde:<br>
+• score_puntos = min(n_puntos/72, 1.0)<br>
+• uniformidad_angular = 1 - varianza_gaps_angulares<br><br>
+
+Niveles:<br>
+• >75%: Alta confianza ✓<br>
+• 50-75%: Media confianza ⚠<br>
+• <50%: Baja confianza ⚠⚠
+                    </code>
+                </div>
+            </div>
+
+            <!-- 5. Algoritmos Detallados -->
+            <div class="section" id="algoritmos">
+                <h2>5. Algoritmos Detallados</h2>
+
+                <h3>5.1 Pipeline de Procesamiento Completo</h3>
+
+                <div class="workflow-step">
+                    <h4>Etapa 1: Carga y Preparación</h4>
+                    <div class="code-block">
+                        <code>
+1. Usuario selecciona archivo de imagen<br>
+2. loadImage() carga imagen con FileReader<br>
+3. setupCanvas() redimensiona canvas proporcionalmente<br>
+4. displayScale se calcula para ajuste visual<br>
+5. Imagen se dibuja en canvas
+                        </code>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Etapa 2: Detección Automática</h4>
+                    <div class="code-block">
+                        <code>
+<strong>Cráneo:</strong><br>
+1. Escaneo de imagen (análisis de píxeles)<br>
+2. Cálculo de bounding box y centro<br>
+3. Estimación de radio óptimo<br>
+4. Generación de 72 puntos en círculo<br>
+5. Renderizado en verde sobre imagen<br><br>
+
+<strong>Cerebro:</strong><br>
+1. Validación de cráneo marcado<br>
+2. Cálculo de centro y radio craneal<br>
+3. Generación de círculo al 75%<br>
+4. Renderizado en rojo
+                        </code>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Etapa 3: Ajuste Manual</h4>
+                    <div class="code-block">
+                        <code>
+<strong>Ajuste Global:</strong><br>
+• Botones de desplazamiento (←→↑↓): ±5px por click<br>
+• Botones de escala (⊕⊖): ±5px de radio<br>
+• Actualización inmediata de todos los puntos<br><br>
+
+<strong>Ajuste Individual:</strong><br>
+• Detección de punto bajo cursor (hitRadius = 8px)<br>
+• Inicio de arrastre con mousedown<br>
+• Umbral de movimiento: 2px para activar<br>
+• Actualización continua durante mousemove<br>
+• Finalización con mouseup<br><br>
+
+<strong>Añadir Puntos:</strong><br>
+• Doble click en área libre<br>
+• Nuevo punto se agrega al array<br>
+• Renderizado inmediato
+                        </code>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Etapa 4: Cálculo y Validación</h4>
+                    <div class="code-block">
+                        <code>
+1. calculateResults() ejecuta:<br>
+&nbsp;&nbsp;a) Perímetro cefálico (Shoelace)<br>
+&nbsp;&nbsp;b) Área cerebral (polígono)<br>
+&nbsp;&nbsp;c) Volumen estimado (3D)<br>
+&nbsp;&nbsp;d) Percentil (interpolación)<br>
+&nbsp;&nbsp;e) Z-score (edad/sexo)<br>
+&nbsp;&nbsp;f) Circularidad<br>
+&nbsp;&nbsp;g) Ratio cerebro/cráneo<br>
+&nbsp;&nbsp;h) Diámetros AP y transversal<br>
+&nbsp;&nbsp;i) Confianza de medición<br><br>
+
+2. Validaciones automáticas:<br>
+&nbsp;&nbsp;• Mínimo 3 puntos requeridos<br>
+&nbsp;&nbsp;• Edad del paciente requerida<br>
+&nbsp;&nbsp;• Verificación de circularidad<br>
+&nbsp;&nbsp;• Alertas de calidad
+                        </code>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Etapa 5: Exportación</h4>
+                    <div class="code-block">
+                        <code>
+exportResults() genera JSON con:<br>
+• metadata (timestamp, software, metodología)<br>
+• patient (edad, sexo)<br>
+• measurements (PC, área, volumen, diámetros)<br>
+• indices (circularidad, ratio, confianza)<br>
+• statistics (Z-score, categoría)<br>
+• qualityControl (checks, nivel de confianza)<br><br>
+
+Descarga automática del archivo JSON
+                        </code>
+                    </div>
+                </div>
+
+                <h3>5.2 Optimizaciones de Rendimiento</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Técnica</th>
+                            <th>Implementación</th>
+                            <th>Beneficio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Escaneo con paso</td>
+                            <td>for (y += 3, x += 3)</td>
+                            <td>9x más rápido que escaneo completo</td>
+                        </tr>
+                        <tr>
+                            <td>Hit detection optimizado</td>
+                            <td>hitRadius = 8px</td>
+                            <td>Búsqueda rápida de punto bajo cursor</td>
+                        </tr>
+                        <tr>
+                            <td>Redibujado selectivo</td>
+                            <td>drawImage() solo cuando necesario</td>
+                            <td>Evita rendering innecesario</td>
+                        </tr>
+                        <tr>
+                            <td>Canvas temporal</td>
+                            <td>tempCanvas para análisis</td>
+                            <td>No modifica canvas principal</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 6. Guía de Uso Clínico -->
+            <div class="section" id="uso">
+                <h2>6. Guía de Uso Clínico</h2>
+
+                <h3>6.1 Protocolo de Adquisición de Imágenes</h3>
+
+                <div class="highlight-box">
+                    <h4>📋 Requisitos de la Imagen MRI</h4>
+                    <ul>
+                        <li><strong>Secuencia:</strong> T2-weighted (T2W) preferible para contraste LCR</li>
+                        <li><strong>Plano:</strong> Axial estricto</li>
+                        <li><strong>Nivel:</strong> Glándula pineal visible</li>
+                        <li><strong>Grosor:</strong> 3-5mm típico</li>
+                        <li><strong>Formato:</strong> JPEG, PNG, DICOM exportado</li>
+                        <li><strong>Calidad:</strong> Sin artefactos significativos de movimiento</li>
+                    </ul>
+                </div>
+
+                <h3>6.2 Flujo de Trabajo Paso a Paso</h3>
+
+                <div class="workflow-step">
+                    <h4>Paso 1: Preparación</h4>
+                    <ol>
+                        <li>Abrir la aplicación en navegador web</li>
+                        <li>Verificar que la imagen MRI esté en formato compatible</li>
+                        <li>Tener datos del paciente disponibles (edad, sexo)</li>
+                    </ol>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Paso 2: Carga de Imagen</h4>
+                    <ol>
+                        <li>Click en área de carga o arrastrar imagen</li>
+                        <li>Esperar visualización en canvas</li>
+                        <li>Verificar que imagen está a escala apropiada</li>
+                        <li>Confirmar que corresponde a nivel de glándula pineal</li>
+                    </ol>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Paso 3: Datos del Paciente</h4>
+                    <ol>
+                        <li>Ingresar <strong>edad</strong> en años (campo requerido)</li>
+                        <li>Seleccionar <strong>sexo</strong> (masculino/femenino)</li>
+                        <li>Verificar <strong>escala mm/pixel</strong> (típicamente 0.5)</li>
+                        <li>Confirmar <strong>grosor de corte</strong> (típicamente 5mm)</li>
+                    </ol>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Paso 4: Marcado del Perímetro Cefálico</h4>
+                    <ol>
+                        <li>Click en botón <strong>"🤖 Auto-detectar Cráneo"</strong></li>
+                        <li>Sistema genera circunferencia de referencia (verde)</li>
+                        <li><strong>Ajuste global</strong> si es necesario:
+                            <ul>
+                                <li>Usar botones ←→↑↓ si está descentrado</li>
+                                <li>Usar ⊕⊖ si tamaño no es apropiado</li>
+                            </ul>
+                        </li>
+                        <li><strong>Ajuste fino</strong>:
+                            <ul>
+                                <li>Arrastrar puntos individuales a la tabla externa del cráneo</li>
+                                <li>Doble click para añadir puntos en áreas complejas</li>
+                                <li>Asegurar que sigue todo el contorno craneal</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Paso 5: Marcado del Área Cerebral</h4>
+                    <ol>
+                        <li>Click en botón <strong>"🤖 Auto-detectar Cerebro"</strong></li>
+                        <li>Sistema valida que cráneo esté marcado</li>
+                        <li>Genera circunferencia interna (roja)</li>
+                        <li><strong>Ajuste al borde del LCR</strong>:
+                            <ul>
+                                <li>Identificar zona brillante del LCR en T2</li>
+                                <li>Arrastrar puntos al borde interno (parénquima-LCR)</li>
+                                <li>Excluir espacios de LCR periféricos</li>
+                                <li>Incluir todo el parénquima cerebral</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Paso 6: Cálculo de Resultados</h4>
+                    <ol>
+                        <li>Click en botón <strong>"📊 Calcular"</strong></li>
+                        <li>Sistema valida datos completos</li>
+                        <li>Calcula todas las métricas</li>
+                        <li>Muestra resultados en panel derecho</li>
+                    </ol>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Paso 7: Interpretación de Resultados</h4>
+                    <ul>
+                        <li><strong>Perímetro Cefálico:</strong> Comparar con percentiles</li>
+                        <li><strong>Z-Score:</strong> Verificar categoría diagnóstica</li>
+                        <li><strong>Circularidad:</strong> Debe ser >0.85 (validación)</li>
+                        <li><strong>Confianza:</strong> Idealmente >75% (alta)</li>
+                        <li><strong>Ratio Cerebro/Cráneo:</strong> 50-80% normal</li>
+                        <li><strong>Diagnóstico Diferencial:</strong> Revisar sugerencias</li>
+                    </ul>
+                </div>
+
+                <div class="workflow-step">
+                    <h4>Paso 8: Exportación (Opcional)</h4>
+                    <ol>
+                        <li>Click en botón <strong>"💾 Exportar Resultados"</strong></li>
+                        <li>Sistema genera archivo JSON</li>
+                        <li>Descarga automática con timestamp</li>
+                        <li>Archivo incluye metadata y trazabilidad completa</li>
+                    </ol>
+                </div>
+
+                <h3>6.3 Interpretación Clínica</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Z-Score</th>
+                            <th>Categoría</th>
+                            <th>Interpretación Clínica</th>
+                            <th>Diagnóstico Diferencial</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>< -3</td>
+                            <td>Microcefalia severa</td>
+                            <td>Significativamente bajo</td>
+                            <td>Malformaciones, infecciones congénitas, síndromes genéticos</td>
+                        </tr>
+                        <tr>
+                            <td>-3 a -2</td>
+                            <td>Microcefalia moderada</td>
+                            <td>Moderadamente bajo</td>
+                            <td>Craneosinostosis, retraso crecimiento, exposiciones prenatales</td>
+                        </tr>
+                        <tr>
+                            <td>-2 a -1.5</td>
+                            <td>Límite bajo</td>
+                            <td>Vigilancia recomendada</td>
+                            <td>Variante normal vs patológico leve</td>
+                        </tr>
+                        <tr>
+                            <td>-1.5 a 1.5</td>
+                            <td>Normal</td>
+                            <td>Rango normal</td>
+                            <td>N/A</td>
+                        </tr>
+                        <tr>
+                            <td>1.5 a 2</td>
+                            <td>Límite alto</td>
+                            <td>Vigilancia recomendada</td>
+                            <td>Variante normal vs patológico temprano</td>
+                        </tr>
+                        <tr>
+                            <td>2 a 3</td>
+                            <td>Macrocefalia moderada</td>
+                            <td>Moderadamente alto</td>
+                            <td>Hidrocefalia, megalencefalia, lesiones ocupantes</td>
+                        </tr>
+                        <tr>
+                            <td>> 3</td>
+                            <td>Macrocefalia severa</td>
+                            <td>Significativamente alto</td>
+                            <td>Hidrocefalia severa, tumores, síndromes de sobrecrecimiento</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>6.4 Casos Especiales</h3>
+
+                <div class="warning-box">
+                    <h4>⚠️ Precauciones</h4>
+                    <ul>
+                        <li><strong>Asimetrías severas:</strong> Añadir más puntos en áreas irregulares</li>
+                        <li><strong>Artefactos de movimiento:</strong> Marcar cuidadosamente, ignorar artefactos</li>
+                        <li><strong>Malformaciones:</strong> Criterio clínico prevalece sobre auto-detección</li>
+                        <li><strong>Post-quirúrgico:</strong> Documentar alteraciones anatómicas</li>
+                        <li><strong>Hidrocefalia:</strong> Marcar tabla interna de cráneo, no ventrículos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 7. Validación y Control de Calidad -->
+            <div class="section" id="validacion">
+                <h2>7. Validación y Control de Calidad</h2>
+
+                <h3>7.1 Métricas de Validación Automática</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Rango Óptimo</th>
+                            <th>Alerta</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Índice de Circularidad</td>
+                            <td>> 0.85</td>
+                            <td>< 0.85 ⚠</td>
+                            <td>Revisar trazado, añadir puntos</td>
+                        </tr>
+                        <tr>
+                            <td>Confianza de Medición</td>
+                            <td>> 75%</td>
+                            <td>< 50% ⚠⚠</td>
+                            <td>Mejorar distribución de puntos</td>
+                        </tr>
+                        <tr>
+                            <td>Número de Puntos</td>
+                            <td>50-100</td>
+                            <td>< 30 ⚠</td>
+                            <td>Añadir más puntos</td>
+                        </tr>
+                        <tr>
+                            <td>Ratio Cerebro/Cráneo</td>
+                            <td>0.5-0.8</td>
+                            <td>< 0.5 o > 0.8 ⚠</td>
+                            <td>Verificar trazado cerebral</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>7.2 Checklist de Calidad</h3>
+
+                <div class="success-box">
+                    <h4>✅ Checklist Pre-Cálculo</h4>
+                    <ul>
+                        <li>☐ Imagen corresponde a nivel de glándula pineal</li>
+                        <li>☐ Plano axial estricto (sin angulación)</li>
+                        <li>☐ Sin artefactos significativos de movimiento</li>
+                        <li>☐ Perímetro cefálico sigue tabla externa</li>
+                        <li>☐ Área cerebral excluye LCR periférico</li>
+                        <li>☐ Puntos distribuidos uniformemente</li>
+                        <li>☐ Datos del paciente completos (edad, sexo)</li>
+                        <li>☐ Escala mm/pixel verificada</li>
+                    </ul>
+                </div>
+
+                <h3>7.3 Reproducibilidad</h3>
+
+                <p>
+                    Para asegurar reproducibilidad entre mediciones:
+                </p>
+
+                <ul>
+                    <li><strong>Mismo operador:</strong> Variabilidad < 2mm (aceptable)</li>
+                    <li><strong>Entre operadores:</strong> Variabilidad < 3mm (aceptable)</li>
+                    <li><strong>Test-retest:</strong> Diferencia < 1% (óptimo)</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h4>🔍 Buenas Prácticas</h4>
+                    <ul>
+                        <li>Realizar medición dos veces independientemente</li>
+                        <li>Comparar resultados (diferencia < 2mm)</li>
+                        <li>En caso de discrepancia > 2mm, realizar tercera medición</li>
+                        <li>Documentar observaciones relevantes (asimetrías, malformaciones)</li>
+                        <li>Exportar resultados para trazabilidad</li>
+                    </ul>
+                </div>
+
+                <h3>7.4 Limitaciones del Sistema</h3>
+
+                <div class="warning-box">
+                    <h4>⚠️ Limitaciones Conocidas</h4>
+                    <ul>
+                        <li>Sistema 2D: No reemplaza medición volumétrica 3D completa</li>
+                        <li>Requiere corte específico: Variabilidad si nivel anatómico diferente</li>
+                        <li>Dependiente de calidad de imagen: Artefactos afectan precisión</li>
+                        <li>Semi-automático: Requiere criterio clínico del operador</li>
+                        <li>Datos normativos: Basados en poblaciones específicas</li>
+                    </ul>
+                </div>
+
+                <p>
+                    <strong>Recomendación:</strong> Utilizar este sistema como herramienta de apoyo diagnóstico. 
+                    La interpretación final debe integrar historia clínica, examen físico y otras pruebas 
+                    complementarias.
+                </p>
+            </div>
+
+            <!-- 8. Referencias Bibliográficas -->
+            <div class="section" id="referencias">
+                <h2>8. Referencias Bibliográficas</h2>
+
+                <div class="reference-list">
+                    <ol>
+                        <li>
+                            <strong>Li G, et al. (2021).</strong> 
+                            <em>Automated measurement of cranial circumference from brain MRI.</em> 
+                            NeuroImage Clinical. PMC8326831.
+                            <br>
+                            <small>Metodología principal de OFC-MRI implementada en este sistema.</small>
+                        </li>
+
+                        <li>
+                            <strong>Makropoulos A, et al. (2018).</strong> 
+                            <em>The developing human connectome project: A minimal processing pipeline for neonatal cortical surface reconstruction.</em> 
+                            NeuroImage. PMC8648705.
+                            <br>
+                            <small>Pipeline de procesamiento para neuroimagen del desarrollo.</small>
+                        </li>
+
+                        <li>
+                            <strong>WHO Multicentre Growth Reference Study Group. (2006).</strong> 
+                            <em>WHO Child Growth Standards: Length/height-for-age, weight-for-age, weight-for-length, weight-for-height and body mass index-for-age.</em> 
+                            Geneva: World Health Organization.
+                            <br>
+                            <small>Estándares de crecimiento infantil utilizados para Z-scores pediátricos.</small>
+                        </li>
+
+                        <li>
+                            <strong>Rollins JD, Collins JS, Holden KR. (2010).</strong> 
+                            <em>United States Head Circumference Growth Reference Charts: Birth to 21 Years.</em> 
+                            J Pediatr. 156(6):907-913.
+                            <br>
+                            <small>Referencias de perímetro cefálico para población estadounidense.</small>
+                        </li>
+
+                        <li>
+                            <strong>Vázquez E, et al. (2013).</strong> 
+                            <em>Neuroimagen pediátrica: Guía de interpretación.</em> 
+                            Journal of Medical Anatomy. 1084-1088.
+                            <br>
+                            <small>Guía de interpretación de neuroimágenes en pediatría.</small>
+                        </li>
+
+                        <li>
+                            <strong>UNC Neuro Image Research and Analysis Laboratories (NIRAL).</strong> 
+                            <em>Intracranial Volume Reference Data.</em> 
+                            University of North Carolina at Chapel Hill.
+                            <br>
+                            <small>Base de datos normativa de volúmenes intracraneales.</small>
+                            <br>
+                            <a href="https://www.med.unc.edu/psych/research/niral/" target="_blank">https://www.med.unc.edu/psych/research/niral/</a>
+                        </li>
+
+                        <li>
+                            <strong>Shoelace formula for polygon area.</strong> 
+                            <em>Computational Geometry Algorithms.</em>
+                            <br>
+                            <small>Algoritmo matemático para cálculo de área de polígonos.</small>
+                        </li>
+
+                        <li>
+                            <strong>Perimeter calculation for irregular polygons.</strong> 
+                            <em>Geometric computation methods.</em>
+                            <br>
+                            <small>Método de suma de distancias euclidianas entre puntos consecutivos.</small>
+                        </li>
+                    </ol>
+                </div>
+
+                <h3>Recursos Adicionales</h3>
+
+                <ul>
+                    <li>
+                        <strong>Repositorio del Proyecto:</strong> 
+                        Sistema implementado como aplicación web estática
+                    </li>
+                    <li>
+                        <strong>Tecnologías Utilizadas:</strong>
+                        <ul>
+                            <li>HTML5 Canvas API para renderizado</li>
+                            <li>JavaScript ES6+ para lógica</li>
+                            <li>Docker para despliegue</li>
+                            <li>Nginx para servir aplicación</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Licencia:</strong> Software de uso clínico y educativo
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Footer -->
+            <div style="background: #f8f9fa; padding: 30px; margin-top: 50px; border-top: 3px solid #667eea; text-align: center;">
+                <p style="margin-bottom: 15px;">
+                    <strong>Brain MRI Analyzer v2.0</strong><br>
+                    Sistema de Medición Semi-Automatizada de Perímetro Cefálico y Área Cerebral
+                </p>
+                <p style="font-size: 0.9em; color: #666;">
+                    Implementa metodología clínica validada basada en estándares OFC-MRI<br>
+                    Desarrollado con fines clínicos y educativos | Diciembre 2024
+                </p>
+                <div style="margin-top: 20px;">
+                    <a href="index.html" style="color: #667eea; text-decoration: none; font-weight: bold;">
+                        ← Volver a la Aplicación
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
