@@ -1,0 +1,134 @@
+{
+  "theme": {
+    "name": "NeuropediaLab Unified Theme",
+    "version": "1.0.0",
+    "basedOn": "WordPress Twenty Nineteen",
+    "description": "Tema unificado para todas las aplicaciones web del laboratorio"
+  },
+  "colors": {
+    "primary": "#0073AA",
+    "primaryDark": "#005177",
+    "primaryLight": "#2E9ED9",
+    "secondary": "#007CBA",
+    "accent": "#CD2653",
+    "background": "#FFFFFF",
+    "backgroundAlt": "#F7F7F7",
+    "surface": "#FFFFFF",
+    "text": "#111111",
+    "textLight": "#767676",
+    "textInverse": "#FFFFFF",
+    "border": "#DDDDDD",
+    "borderLight": "#E2E2E2",
+    "link": "#0073AA",
+    "linkHover": "#005177",
+    "success": "#46B450",
+    "warning": "#FFB900",
+    "error": "#DC3232",
+    "info": "#00A0D2"
+  },
+  "typography": {
+    "fontFamily": {
+      "base": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif",
+      "heading": "'NonBreakingSpaceOverride', 'Hoefler Text', Garamond, 'Times New Roman', serif",
+      "code": "Menlo, Monaco, Consolas, 'Courier New', monospace"
+    },
+    "fontSize": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "base": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem",
+      "4xl": "2.25rem",
+      "5xl": "3rem"
+    },
+    "fontWeight": {
+      "light": 300,
+      "normal": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "lineHeight": {
+      "tight": 1.25,
+      "normal": 1.5,
+      "relaxed": 1.75
+    }
+  },
+  "spacing": {
+    "xs": "0.25rem",
+    "sm": "0.5rem",
+    "md": "1rem",
+    "lg": "1.5rem",
+    "xl": "2rem",
+    "2xl": "3rem",
+    "3xl": "4rem"
+  },
+  "borderRadius": {
+    "none": "0",
+    "sm": "0.125rem",
+    "md": "0.25rem",
+    "lg": "0.5rem",
+    "full": "9999px"
+  },
+  "shadows": {
+    "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+    "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+    "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+    "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+  },
+  "components": {
+    "header": {
+      "backgroundColor": "#FFFFFF",
+      "borderBottom": "1px solid #E2E2E2",
+      "padding": "1.5rem",
+      "boxShadow": "0 1px 2px 0 rgba(0, 0, 0, 0.05)"
+    },
+    "button": {
+      "primary": {
+        "backgroundColor": "#0073AA",
+        "color": "#FFFFFF",
+        "borderRadius": "0.25rem",
+        "padding": "0.5rem 1rem",
+        "fontWeight": 600,
+        "hover": {
+          "backgroundColor": "#005177"
+        }
+      },
+      "secondary": {
+        "backgroundColor": "#F7F7F7",
+        "color": "#111111",
+        "borderRadius": "0.25rem",
+        "padding": "0.5rem 1rem",
+        "fontWeight": 600,
+        "hover": {
+          "backgroundColor": "#E2E2E2"
+        }
+      }
+    },
+    "card": {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": "0.25rem",
+      "border": "1px solid #E2E2E2",
+      "padding": "1.5rem",
+      "boxShadow": "0 1px 2px 0 rgba(0, 0, 0, 0.05)"
+    },
+    "input": {
+      "backgroundColor": "#FFFFFF",
+      "border": "1px solid #DDDDDD",
+      "borderRadius": "0.25rem",
+      "padding": "0.5rem 0.75rem",
+      "fontSize": "1rem",
+      "focus": {
+        "borderColor": "#0073AA",
+        "outline": "2px solid rgba(0, 115, 170, 0.2)"
+      }
+    }
+  },
+  "layout": {
+    "maxWidth": "1200px",
+    "containerPadding": "1rem",
+    "gridGap": "1.5rem"
+  }
+}
